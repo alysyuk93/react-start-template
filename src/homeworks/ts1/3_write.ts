@@ -9,6 +9,8 @@
  * - name (строка)
  * - photo (строка, необязательно)
  */
+import { v4 as uuidv4 } from 'uuid';
+
 type Category = {
   id: string;
   name: string;
@@ -79,18 +81,17 @@ type Profit = {
  * */
 export const createRandomProduct = (createdAt: string): Product => {
   const productName = 'Example Product';
-  const productId = '1';
   const productPhoto = 'https://productphoto.com/photo.jpg';
   const productDesc = '';
   const oldProdPrice = 100;
   const productPrice = '50$';
   const productCategory: Category = {
-    id: '2',
+    id: uuidv4(),
     name: 'Category example',
   };
 
   const product: Product = {
-    id: productId,
+    id: uuidv4(),
     name: productName,
     createdAt: createdAt,
     photo: productPhoto,
@@ -108,17 +109,20 @@ export const createRandomProduct = (createdAt: string): Product => {
  * */
 export const createRandomOperation = (createdAt: string): Operation => {
   const productCategory: Category = {
-    id: '2',
+    id: uuidv4(),
     name: 'Category example',
   };
-  const cost: Cost = {
-    id: '1',
-    name: 'cost name',
+
+  const randomType: 'Cost' | 'Profit' = Math.random() < 0.5 ? 'Cost' : 'Profit';
+
+  const operation: Operation = {
+    id: uuidv4(),
+    name: `${randomType} name`,
     createdAt: createdAt,
     amount: 3,
     category: productCategory,
-    type: 'Cost',
+    type: randomType,
   };
-  const operation: Operation = cost;
+
   return operation;
 };

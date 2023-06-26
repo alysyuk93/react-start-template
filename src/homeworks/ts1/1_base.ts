@@ -18,7 +18,12 @@ export const round = (value: number, accuracy = 2) => {
 const transformRegexp =
   /(matrix\(-?\d+(\.\d+)?, -?\d+(\.\d+)?, -?\d+(\.\d+)?, -?\d+(\.\d+)?, )(-?\d+(\.\d+)?), (-?\d+(\.\d+)?)\)/;
 
-export const getTransformFromCss = (transformCssString: string): { x: number; y: number } => {
+type Point = {
+  x: number;
+  y: number;
+};
+
+export const getTransformFromCss = (transformCssString: string): Point => {
   const data = transformCssString.match(transformRegexp);
   if (!data) return { x: 0, y: 0 };
   return {
@@ -37,7 +42,7 @@ export const getContrastType = (contrastValue: number): string => (contrastValue
 export const shortColorRegExp = /^#[0-9a-f]{3}$/i;
 export const longColorRegExp = /^#[0-9a-f]{6}$/i;
 
-export const checkColor = (color: string): void => {
+export const checkColor = (color: string): never => {
   if (!longColorRegExp.test(color) && !shortColorRegExp.test(color)) throw new Error(`invalid hex color: ${color}`);
 };
 
@@ -55,13 +60,25 @@ export const hex2rgb = (color: string): number[] => {
   return [red, green, blue];
 };
 
-export const getNumberedArray = (arr: string[]): { value: string; number: number }[] =>
+type NumberedArrayItem = {
+  value: string;
+  number: number;
+};
+
+export const getNumberedArray = (arr: string[]): NumberedArrayItem[] =>
   arr.map((value: string, number: number) => ({ value, number }));
-export const toStringArray = (arr: { value: string; number: number }[]): string[] =>
+export const toStringArray = (arr: NumberedArrayItem[]): string[] =>
   arr.map(({ value, number }) => `${value}_${number}`);
 
+type Customer = {
+  id: number;
+  name: string;
+  age: number;
+  isSubscribed: boolean;
+};
+
 export const transformCustomers = (
-  customers: { id: number; name: string; age: number; isSubscribed: boolean }[]
+  customers: Customer[]
 ): { [id: number]: { name: string; age: number; isSubscribed: boolean } } => {
   return customers.reduce(
     (
